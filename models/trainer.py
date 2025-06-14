@@ -37,10 +37,10 @@ class LexiBriefTrainer:
         os.makedirs(self.config["output"]["logging_dir"], exist_ok=True)
         
     def setup_model_and_tokenizer(self):
-        """Initialize the model and tokenizer with QLoRA configuration."""
+        """Initialize the model and tokenizer with QLoRA configuration for GPU."""
         logger.info("Setting up model and tokenizer...")
         
-        # Setup quantization config
+        # Setup quantization config for GPU efficiency
         compute_dtype = torch.bfloat16 if self.config["hardware"]["mixed_precision"] == "bf16" else torch.float16
         
         bnb_config = BitsAndBytesConfig(
@@ -54,7 +54,7 @@ class LexiBriefTrainer:
         self.model = AutoModelForCausalLM.from_pretrained(
             self.config["model"]["name"],
             quantization_config=bnb_config,
-            device_map="auto",
+            device_map="auto",  # Automatically handle device placement
             trust_remote_code=True
         )
         

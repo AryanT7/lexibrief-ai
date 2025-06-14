@@ -3,6 +3,7 @@ from typing import Dict, List, Optional
 import numpy as np
 from transformers import AutoTokenizer
 import logging
+import torch
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -28,7 +29,14 @@ class BillSumDataProcessor:
         self.max_length = max_length
         self.train_size = train_size
         self.seed = seed
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        
+        # Initialize tokenizer with GPU support if available
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            model_name,
+            device_map="auto" if self.device == "cuda" else None,
+            torch_dtype=torch.float16 if self.device == "cuda" else torch.float32
+        )
         
         # Add special tokens if needed
         self.tokenizer.pad_token = self.tokenizer.eos_token

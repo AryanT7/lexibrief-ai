@@ -1,32 +1,32 @@
 # Model configuration
 model:
   name: "mistralai/Mistral-7B-Instruct-v0.2"
-  max_length: 1024  # Reduced to save memory
+  max_length: 1024  # Good balance for GPU memory
 
 # Training configuration
 training:
   seed: 42
   num_train_epochs: 3
-  per_device_train_batch_size: 1  # Reduced for CPU
-  per_device_eval_batch_size: 1   # Reduced for CPU
-  gradient_accumulation_steps: 8   # Increased to compensate for smaller batch size
+  per_device_train_batch_size: 4   # Increased for GPU
+  per_device_eval_batch_size: 4    # Increased for GPU
+  gradient_accumulation_steps: 4   # Adjusted for GPU batch size
   learning_rate: 2e-4
   warmup_ratio: 0.03
   weight_decay: 0.01
   logging_steps: 10
-  eval_steps: 50                  # Reduced frequency for CPU
-  save_steps: 50                  # Reduced frequency for CPU
+  eval_steps: 50
+  save_steps: 50
   max_grad_norm: 0.3
-  save_total_limit: 2             # Reduced to save disk space
+  save_total_limit: 2
   evaluation_strategy: "steps"
   save_strategy: "steps"
   load_best_model_at_end: true
   metric_for_best_model: "rouge-l"
   greater_is_better: true
 
-# QLoRA configuration
+# QLoRA configuration for efficient GPU training
 peft:
-  r: 32                          # Reduced for memory efficiency
+  r: 32                          # LoRA attention dimension
   lora_alpha: 16
   lora_dropout: 0.1
   bias: "none"
@@ -43,10 +43,10 @@ data:
 output:
   output_dir: "outputs"
   logging_dir: "logs"
-  report_to: "none"              # Disabled wandb for simplicity
+  report_to: "none"              # Can be changed to "wandb" for experiment tracking
   project_name: "LexiBrief"
 
 # Hardware configuration
 hardware:
-  mixed_precision: "no"          # Changed to no mixed precision for CPU
-  device: "cpu"                  # Set to CPU explicitly 
+  mixed_precision: "bf16"        # Using mixed precision for GPU efficiency
+  device: "cuda"                 # Set to use GPU 
