@@ -2,7 +2,7 @@ numpy>=1.26.0,<2.1.0
 pandas==2.2.2
 transformers==4.41.0
 tqdm>=4.67.0
-websockets==14.0.0
+websockets>=13.0,<15.0
 torch>=2.1.0
 peft==0.7.0
 datasets>=2.15.0
@@ -14,8 +14,8 @@ nltk>=3.8.1
 gradio==3.40.1
 wandb>=0.15.8
 python-dotenv>=1.0.0
-requests>=2.31.0
+requests>=2.31.0,<3.0.0
 PyYAML>=6.0
-scipy>=1.10.1
+scipy>=1.11.0  # Ensure this is >= what JAX wants
 sentencepiece>=0.1.99
-protobuf>=4.25.1
+# protobuf not pinned to avoid conflicts in Colab
