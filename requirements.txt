@@ -1,6 +1,6 @@
-numpy>=1.26.0,<2.0.0
+numpy==1.26.4
 pandas==2.2.0
-transformers==4.52.4
+transformers==4.40.2
 tqdm>=4.67.0
 websockets>=13.0,<15.0
 torch>=2.1.0
