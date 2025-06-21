@@ -1,6 +1,6 @@
 # Model configuration
 model:
-  name: "mistralai/Mistral-7B-Instruct-v0.2"
+  name: "mistralai/Mistral-7B-Instruct-v0.1"
   max_length: 1024  # Good balance for GPU memory
 
 # Training configuration
