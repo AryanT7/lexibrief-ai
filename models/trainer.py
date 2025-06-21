@@ -41,12 +41,12 @@ class LexiBriefTrainer:
         logger.info("Setting up model and tokenizer...")
         
         # Setup quantization config for GPU efficiency
-        # compute_dtype = torch.bfloat16 if self.config["hardware"]["mixed_precision"] == "bf16" else torch.float16
+        compute_dtype = torch.bfloat16 if self.config["hardware"]["mixed_precision"] == "bf16" else torch.float16
         
         bnb_config = BitsAndBytesConfig(
             load_in_4bit=True,
             bnb_4bit_quant_type="nf4",
-            bnb_4bit_compute_dtype=torch.float16,
+            bnb_4bit_compute_dtype=compute_dtype,
             bnb_4bit_use_double_quant=True
         )
         
