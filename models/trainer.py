@@ -54,12 +54,11 @@ class LexiBriefTrainer:
         self.model = AutoModelForCausalLM.from_pretrained(
             self.config["model"]["name"],
             quantization_config=bnb_config,
-            device_map="auto",  # Automatically handle device placement
             trust_remote_code=True
         )
         
         # Prepare model for k-bit training
-        self.model = prepare_model_for_kbit_training(self.model)
+        # self.model = prepare_model_for_kbit_training(self.model)
         
         # Setup LoRA configuration
         peft_config = LoraConfig(
