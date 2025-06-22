@@ -7,7 +7,7 @@ torch>=2.1.0
 peft==0.10.0
 datasets>=2.15.0
 accelerate>=0.25.0
-bitsandbytes==0.41.3
+bitsandbytes==0.41.1
 evaluate>=0.4.0
 rouge_score>=0.1.2
 nltk>=3.8.1
