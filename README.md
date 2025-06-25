@@ -1,109 +1,68 @@
-# LexiBrief: AI-Powered Legal Document Summarizer
+# LexiBrief: Legal Document Summarizer
 
-LexiBrief is an advanced legal document summarization system built on the Mistral-7B-Instruct model, fine-tuned specifically for summarizing U.S. legislative bills. This project demonstrates the application of state-of-the-art language models to the legal domain, utilizing efficient training techniques like QLoRA for resource-optimized fine-tuning.
+LexiBrief is a fine-tuned version of Mistral-7B-Instruct specifically optimized for legal document summarization. The model uses LoRA (Low-Rank Adaptation) for efficient fine-tuning and is trained on the BillSum dataset.
 
-## Features
-
-- Fine-tuned Mistral-7B-Instruct model using QLoRA (4-bit quantization + LoRA adapters)
-- Training on the billsum dataset for specialized legal document summarization
-- Evaluation using ROUGE-L and BLEU metrics
-- Dual inference support:
-  - Local inference with the fine-tuned model
-  - Cloud inference via OpenRouter API
-- Interactive UI demo using Gradio
-- Batch processing capabilities for multiple documents
-
-## Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/LexiBrief.git
-cd LexiBrief
-```
-
-2. Create a virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-## Project Structure  
+## Project Structure
 
 ```
 LexiBrief/
-├── data/                  # Data processing and formatting
-├── models/               # Model training and fine-tuning
-├── evaluation/           # Evaluation metrics and testing
-├── inference/            # Inference API and utilities
-├── ui/                   # Gradio UI implementation
-├── scripts/              # Utility scripts
-└── configs/              # Configuration files
+├── configs/               # Configuration files
+├── outputs/              # Training outputs
+│   ├── models/          # Saved model checkpoints
+│   ├── logs/           # Training logs
+│   └── results/        # Evaluation results
+├── LexiBrief_Colab.ipynb # Main training notebook
+├── requirements.txt      # Project dependencies
+└── README.md            # This file
 ```
 
-## Usage
+## Setup and Usage
 
-### Training
+1. Open `LexiBrief_Colab.ipynb` in Google Colab
+2. Run the notebook cells in sequence
+3. When prompted, log in to your Hugging Face account
 
-To fine-tune the model:
-```bash
-python scripts/train.py --config configs/training_config.yaml
-```
+The notebook will:
+- Set up the environment
+- Install dependencies
+- Load and preprocess the BillSum dataset
+- Fine-tune Mistral-7B-Instruct using LoRA
+- Provide a Gradio interface for testing
 
-### Evaluation
+## Model Details
 
-To evaluate the model:
-```bash
-python scripts/evaluate.py --model_path path/to/model --test_data path/to/test_data
-```
+- Base Model: mistralai/Mistral-7B-Instruct-v0.1
+- Training Method: LoRA fine-tuning with fp16 precision
+- Dataset: BillSum (US Congressional bills and their summaries)
+- Hardware: Optimized for Google Colab's T4 GPU
 
-### UI Demo
+### Training Configuration
 
-To launch the Gradio interface:
-```bash
-python ui/app.py
-```
+- Learning rate: 2e-4
+- Epochs: 3
+- Batch size: 4 (GPU) / 1 (CPU)
+- Gradient accumulation steps: 4
+- Mixed precision: fp16 (GPU) / no (CPU)
 
-### Batch Processing
+### LoRA Configuration
 
-To process multiple documents:
-```bash
-python scripts/batch_process.py --input_dir path/to/input --output_dir path/to/output
-```
+- r: 64
+- lora_alpha: 16
+- Target modules: ["q_proj", "k_proj", "v_proj", "o_proj"]
+- Task type: CAUSAL_LM
 
-## Model Performance
+## Requirements
 
-The fine-tuned model achieves the following metrics on the test set:
-- ROUGE-L: (to be updated after training)
-- BLEU: (to be updated after training)
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+See `requirements.txt` for the full list of dependencies. Key requirements:
+- transformers==4.40.2
+- peft==0.10.0
+- torch>=2.0.0
+- accelerate==0.26.0
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+Apache License 2.0
 
-## Acknowledgments
+## Contact
 
-- HuggingFace team for the transformers library
-- Mistral AI for the base model
-- The creators of the billsum dataset
-
-## Citation
-
-If you use this project in your research, please cite:
-
-```bibtex
-@software{lexibrief2024,
-  author = {Your Name},
-  title = {LexiBrief: AI-Powered Legal Document Summarizer},
-  year = {2024},
-  url = {https://github.com/yourusername/LexiBrief}
-}
-``` 
+For questions or issues, please open a GitHub issue. 
