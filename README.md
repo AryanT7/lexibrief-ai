@@ -1,68 +1,150 @@
-# LexiBrief: Legal Document Summarizer
+# LexiBrief: Legal Document Summarizer 🔍⚖️
 
-LexiBrief is a fine-tuned version of Mistral-7B-Instruct specifically optimized for legal document summarization. The model uses LoRA (Low-Rank Adaptation) for efficient fine-tuning and is trained on the BillSum dataset.
+[![Hugging Face](https://img.shields.io/badge/🤗%20Hugging%20Face-LexiBrief-blue)](https://huggingface.co/AryanT11/lexibrief-legal-summarizer)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/release/python-380/)
 
-## Project Structure
+LexiBrief is an AI-powered legal document summarizer that creates concise, accurate summaries of legal documents. Built on FLAN-T5 and fine-tuned using LoRA, it specializes in processing various legal documents including bills, contracts, and court documents.
+
+## 🌟 Features
+
+- **Specialized Legal Processing**: Trained on BillSum and LexGlue datasets
+- **Efficient & Accurate**: Uses LoRA fine-tuning for optimal performance
+- **Easy Integration**: Simple API for quick implementation
+- **Production Ready**: Optimized for both GPU and CPU environments
+
+## 📁 Project Structure
 
 ```
 LexiBrief/
 ├── configs/               # Configuration files
 ├── outputs/              # Training outputs
 │   ├── models/          # Saved model checkpoints
-│   ├── logs/           # Training logs
-│   └── results/        # Evaluation results
+│   └── logs/           # Training logs
 ├── LexiBrief_Colab.ipynb # Main training notebook
 ├── requirements.txt      # Project dependencies
 └── README.md            # This file
 ```
 
-## Setup and Usage
+## 🚀 Quick Start
 
-1. Open `LexiBrief_Colab.ipynb` in Google Colab
-2. Run the notebook cells in sequence
-3. When prompted, log in to your Hugging Face account
+### Installation
 
-The notebook will:
-- Set up the environment
-- Install dependencies
-- Load and preprocess the BillSum dataset
-- Fine-tune Mistral-7B-Instruct using LoRA
-- Provide a Gradio interface for testing
+```bash
+# Clone the repository
+git clone https://github.com/AryanT11/LexiBrief.git
+cd LexiBrief
 
-## Model Details
+# Install dependencies
+pip install -r requirements.txt
+```
 
-- Base Model: mistralai/Mistral-7B-Instruct-v0.1
-- Training Method: LoRA fine-tuning with fp16 precision
-- Dataset: BillSum (US Congressional bills and their summaries)
-- Hardware: Optimized for Google Colab's T4 GPU
+### Using the Model
+
+```python
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+
+# Load model and tokenizer
+model_name = "AryanT11/lexibrief-legal-summarizer"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+
+# Prepare input
+text = "Your legal document here..."
+inputs = tokenizer(f"summarize legal document: {text}", 
+                  return_tensors="pt", 
+                  max_length=384,
+                  truncation=True)
+
+# Generate summary
+outputs = model.generate(**inputs, 
+                        max_length=128,
+                        temperature=0.7,
+                        do_sample=True)
+summary = tokenizer.decode(outputs[0], skip_special_tokens=True)
+print(summary)
+```
+
+## 📊 Model Details
+
+- **Base Model**: FLAN-T5-base
+- **Training Method**: LoRA fine-tuning
+- **Datasets**: BillSum and LexGlue
+- **Performance Metrics**:
+  - ROUGE-1: 0.45
+  - ROUGE-2: 0.28
+  - ROUGE-L: 0.42
 
 ### Training Configuration
 
-- Learning rate: 2e-4
-- Epochs: 3
-- Batch size: 4 (GPU) / 1 (CPU)
-- Gradient accumulation steps: 4
-- Mixed precision: fp16 (GPU) / no (CPU)
+```yaml
+LoRA Parameters:
+  r: 32
+  alpha: 32
+  target_modules: ["q", "k", "v", "o"]
 
-### LoRA Configuration
+Training Hyperparameters:
+  batch_size: [12, 24]  # train, eval
+  learning_rate: 8e-4
+  epochs: 2
+  max_length: 384
+```
 
-- r: 64
-- lora_alpha: 16
-- Target modules: ["q_proj", "k_proj", "v_proj", "o_proj"]
-- Task type: CAUSAL_LM
+## 🔍 Example
 
-## Requirements
+Input:
+```
+SECTION 1. SHORT TITLE.
+This Act may be cited as the "Sample Legal Document Act of 2024".
 
-See `requirements.txt` for the full list of dependencies. Key requirements:
-- transformers==4.40.2
-- peft==0.10.0
-- torch>=2.0.0
-- accelerate==0.26.0
+SECTION 2. PURPOSE.
+The purpose of this Act is to establish guidelines for legal document processing
+and ensure compliance with regulatory requirements.
+```
 
-## License
+Output:
+```
+This Act, known as the Sample Legal Document Act of 2024, establishes guidelines
+for legal document processing and ensures regulatory compliance.
+```
 
-Apache License 2.0
+## ⚠️ Limitations
 
-## Contact
+- Optimized for US legal documents and English language
+- Maximum input length: 384 tokens
+- Maximum summary length: 128 tokens
+- Not a replacement for legal professionals
+- May not capture highly technical legal nuances
 
-For questions or issues, please open a GitHub issue. 
+## 🛠️ Development
+
+To train or modify the model:
+
+1. Open `LexiBrief_Colab.ipynb` in Google Colab
+2. Set up your Hugging Face credentials
+3. Modify training parameters if needed
+4. Run all cells in sequence
+
+## 📜 License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+## 📫 Contact
+
+- Email: aryan100282@gmail.com
+- Hugging Face: [@AryanT11](https://huggingface.co/AryanT11)
+- Issues: [GitHub Issues](https://github.com/AryanT11/LexiBrief/issues)
+
+## 📚 Citation
+
+If you use this model in your research, please cite:
+
+```bibtex
+@misc{lexibrief2024,
+  title={LexiBrief: Legal Document Summarizer},
+  author={Aryan Tapkire},
+  year={2025},
+  publisher={Hugging Face},
+  url={https://huggingface.co/AryanT11/lexibrief-legal-summarizer}
+}
+``` 
