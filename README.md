@@ -1,7 +1,6 @@
 # LexiBrief: Legal Document Summarizer 🔍⚖️
 
 [![Hugging Face](https://img.shields.io/badge/🤗%20Hugging%20Face-LexiBrief-blue)](https://huggingface.co/AryanT11/lexibrief-legal-summarizer)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/release/python-380/)
 
 LexiBrief is an AI-powered legal document summarizer that creates concise, accurate summaries of legal documents. Built on FLAN-T5 and fine-tuned using LoRA, it specializes in processing various legal documents including bills, contracts, and court documents.
@@ -125,10 +124,6 @@ To train or modify the model:
 3. Modify training parameters if needed
 4. Run all cells in sequence
 
-## 📜 License
-
-This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
-
 ## 📫 Contact
 
 - Email: aryan100282@gmail.com
@@ -140,7 +135,7 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 If you use this model in your research, please cite:
 
 ```bibtex
-@misc{lexibrief2024,
+@misc{lexibrief2025,
   title={LexiBrief: Legal Document Summarizer},
   author={Aryan Tapkire},
   year={2025},
